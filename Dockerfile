@@ -4,7 +4,7 @@ COPY src /usr/app/src
 
 COPY pom.xml /usr/app
 
-RUN mvn -f /usr/app/pom.xml clean package
+RUN mvn -f /usr/app/pom.xml clean package --spring.datasource.url=$dburl --spring.datasource.username=$dbusername --spring.datasource.password=$dbpwd
 
 
 
