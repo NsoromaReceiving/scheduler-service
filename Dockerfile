@@ -18,4 +18,4 @@ WORKDIR /usr/app
 
 RUN sh -c 'touch tracker-monitoring-scheduler-0.0.1-SNAPSHOT.jar'
 
-ENTRYPOINT exec java $JAVA_OPTS -jar, tracker-monitoring-scheduler-0.0.1-SNAPSHOT.jar
+ENTRYPOINT exec java $JAVA_OPTS -jar tracker-monitoring-scheduler-0.0.1-SNAPSHOT.jar
