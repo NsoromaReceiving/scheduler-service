@@ -98,6 +98,9 @@ public class ScheduleServiceImpl implements ScheduleService{
             schedule.setTrackerType(scheduleDetail.getJobDataMap().getString("trackerType"));
             schedule.setScheduleId(scheduleDetail.getJobDataMap().getString("scheduleId"));
             schedule.setSubject(scheduleDetail.getJobDataMap().getString("subject"));
+            schedule.setTimeFrame(scheduleDetail.getJobDataMap().getString("timeFrame"));
+            schedule.setEndTimeFrame(scheduleDetail.getJobDataMap().getString("endTimeFrame"));
+            schedule.setStartTimeFrame(scheduleDetail.getJobDataMap().getString("startTimeFrame"));
             System.out.println(schedule);
             return schedule;
         } catch (NullPointerException e) {
@@ -115,7 +118,10 @@ public class ScheduleServiceImpl implements ScheduleService{
                 " ---> End Date : " + schedule.getEndDate() +
                 " / Tracker Type : " + schedule.getTrackerType() +
                 " / Customer Id : " + schedule.getCustomerId() +
-                " / Status : " + schedule.getStatus());
+                " / Status : " + schedule.getStatus() +
+                " / Time Frame : " + schedule.getTimeFrame() +
+                " / End Time Frame : " + schedule.getEndTimeFrame() +
+                " / Start Time Frame : " + schedule.getStartTimeFrame());
         jobDetails.getJobDataMap().put("alertFrequency",schedule.getAlertFrequency());
         jobDetails.getJobDataMap().put("alertTime", schedule.getAlertTime().toString());
         jobDetails.getJobDataMap().put("zoneId", schedule.getZoneId().toString());
@@ -124,6 +130,9 @@ public class ScheduleServiceImpl implements ScheduleService{
         jobDetails.getJobDataMap().put("trackerType", schedule.getTrackerType());
         jobDetails.getJobDataMap().put("customerId", schedule.getCustomerId());
         jobDetails.getJobDataMap().put("status", schedule.getStatus());
+        jobDetails.getJobDataMap().put("timeFrame", schedule.getTimeFrame());
+        jobDetails.getJobDataMap().put("endTimeFrame", schedule.getEndTimeFrame());
+        jobDetails.getJobDataMap().put("startTimeFrame", schedule.getEndTimeFrame());
 
         return jobDetails;
     }
