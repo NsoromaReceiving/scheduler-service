@@ -28,7 +28,10 @@ public class ScheduleBuild {
                 " ---> End Date : " + schedule.getEndDate() +
                 " / Tracker Type : " + schedule.getTrackerType() +
                 " / Customer Id : " + schedule.getCustomerId() +
-                " / Status : " + schedule.getStatus());
+                " / Status : " + schedule.getStatus() +
+                "/ Time Frame : " + schedule.getTimeFrame() +
+                "/ End Time Frame : " + schedule.getEndTimeFrame() +
+                "/ Start Time Frame : " + schedule.getStartTimeFrame());
         jobDataMap.put("scheduleId", schedule.getScheduleId());
         jobDataMap.put("alertFrequency",schedule.getAlertFrequency());
         jobDataMap.put("alertTime", schedule.getAlertTime().toString());
@@ -38,6 +41,9 @@ public class ScheduleBuild {
         jobDataMap.put("trackerType", schedule.getTrackerType());
         jobDataMap.put("customerId", schedule.getCustomerId());
         jobDataMap.put("status", schedule.getStatus());
+        jobDataMap.put("timeFrame", schedule.getTimeFrame());
+        jobDataMap.put("endTimeFrame", schedule.getEndTimeFrame());
+        jobDataMap.put("startTimeFrame", schedule.getStartTimeFrame());
 
         return JobBuilder.newJob(ScheduleExecution.class)
                 .withIdentity(schedule.getScheduleId(), "NsoromaTrackerMonitoringSystemJobs")
