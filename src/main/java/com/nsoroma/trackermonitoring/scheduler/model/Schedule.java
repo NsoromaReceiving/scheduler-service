@@ -16,6 +16,9 @@ public class Schedule {
     private String email;
     private String status;
     private String subject;
+    private String timeFrame;
+    private String endTimeFrame;
+    private String startTimeFrame;
 
     public String getEmail() {
         return email;
@@ -75,4 +78,13 @@ public class Schedule {
 
     public String getSubject() { return subject; }
     public void setSubject(String subject) { this.subject = subject; }
+
+    public String getTimeFrame() { return timeFrame; }
+    public void setTimeFrame( String timeFrame) { this.timeFrame = timeFrame; }
+
+    public String getEndTimeFrame() { return endTimeFrame; }
+    public void setEndTimeFrame(String endTimeFrame) { this.endTimeFrame = endTimeFrame; }
+
+    public String getStartTimeFrame() { return startTimeFrame; }
+    public void setStartTimeFrame(String startTimeFrame) { this.startTimeFrame = startTimeFrame; }
 }
