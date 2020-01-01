@@ -20,6 +20,9 @@ import javax.mail.internet.MimeMessage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
@@ -54,14 +57,48 @@ public class ScheduleExecution extends QuartzJobBean {
         String subject = jobDataMap.getString("subject");
         String body = jobDataMap.getString("body");
         String receiverMail = jobDataMap.getString("email");
-        String startDate = jobDataMap.getString("startDate");
-        String endDate = jobDataMap.getString("endDate");
         String trackerType = jobDataMap.getString("trackerType");
         String customerId = jobDataMap.getString("customerId");
         String status = jobDataMap.getString("status");
         String order = null;
         Optional<String> alertFrequency = Optional.ofNullable(jobDataMap.getString("alertFrequency"));
+        String startDate = jobDataMap.getString("startDate");
+        String endDate = jobDataMap.getString("endDate");
 
+        String scheduleZoneId = jobDataMap.getString("zoneId");
+        ZoneId zoneId = ZoneId.of(scheduleZoneId);
+        DateTimeFormatter df =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        //time frame
+        String timeFrame = jobDataMap.getString("timeFrame");
+        if(timeFrame != null && !timeFrame.equals("")) {
+            System.out.println("timer framed");
+            int period = Integer.parseInt(timeFrame);
+            ZonedDateTime zonedStartDate = ZonedDateTime.now(zoneId).minusDays(1);
+            startDate = zonedStartDate.minusDays(period).format(df);
+            endDate = zonedStartDate.format(df);
+        }
+
+        //endTimeFrame
+        String endTimeFrame = jobDataMap.getString("endTimeFrame");
+        if(endTimeFrame != null && !endTimeFrame.equals("")) {
+            System.out.println("start time frame");
+            int periodToEndDate = Integer.parseInt(endTimeFrame);
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId).minusDays(periodToEndDate);
+            endDate = zonedDateTime.format(df);
+        }
+
+        //startTimeFrame
+        String startTimeFrame = jobDataMap.getString("startTimeFrame");
+        if(startTimeFrame != null && !startTimeFrame.equals("")) {
+            System.out.println(" end time frame");
+            int periodToStartDate = Integer.parseInt(startTimeFrame);
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId).minusDays(periodToStartDate);
+            startDate = zonedDateTime.format(df);
+        }
+
+        System.out.println(startDate);
+        System.out.println(endDate);
         LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status);
 
         try {
