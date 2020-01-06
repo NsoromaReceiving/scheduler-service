@@ -13,8 +13,8 @@ pipelines:
         name: analyze with sonarcloud
         script:
           - pipe: sonarsource/sonarcloud-scan:1.0.1
-            # variables:
-            #   SONAR_TOKEN: '<string>'  # Optional
+            variables:
+               SONAR_TOKEN: SONAR_TOKEN
             #   EXTRA_ARGS: '<string>'  # Optional
             #   SONAR_SCANNER_OPTS: '<string>'  # Optional
             #   DEBUG: '<boolean>'  # Optional
