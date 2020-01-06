@@ -9,7 +9,18 @@ image: atlassian/default-image:2
 
 pipelines:
   default:
-    - step:
+    - step: &sonarcloud
+        name: analyze with sonarcloud
+        script:
+          - pipe: sonarsource/sonarcloud-scan:1.0.1
+            # variables:
+            #   SONAR_TOKEN: '<string>'  # Optional
+            #   EXTRA_ARGS: '<string>'  # Optional
+            #   SONAR_SCANNER_OPTS: '<string>'  # Optional
+            #   DEBUG: '<boolean>'  # Optional
+
+    - step: &build-docker
+        name: build and deploy
         services:
           - docker
         script: # Modify the commands below to build your repository.
@@ -28,3 +39,5 @@ definitions:
   services:
     docker:
       memory: 2048  #increasing docker memory size
+  
+  
