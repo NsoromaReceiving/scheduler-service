@@ -12,7 +12,8 @@ pipelines:
     - step: &sonarqube
         name: analyze with hawkman sonarqube server
         script:
-           - mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar \
+           - mvn clean install
+           - mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar \
                -Dsonar.projectKey=n-t-m-s-19 \
                -Dsonar.host.url=http://165.22.120.243:9000 \
                -Dsonar.login=54c62c9870263292a8e586d4beed7d3a3f4d7c3c
