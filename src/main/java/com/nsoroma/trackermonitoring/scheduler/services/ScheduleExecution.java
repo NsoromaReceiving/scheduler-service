@@ -51,7 +51,6 @@ public class ScheduleExecution extends QuartzJobBean {
  //refactor to fetch from eureka server instance
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("executing schedule");
 
         JobDataMap jobDataMap = context.getMergedJobDataMap();
         String subject = jobDataMap.getString("subject");
@@ -72,7 +71,6 @@ public class ScheduleExecution extends QuartzJobBean {
         //time frame
         String timeFrame = jobDataMap.getString("timeFrame");
         if(timeFrame != null && !timeFrame.equals("")) {
-            System.out.println("timer framed");
             int period = Integer.parseInt(timeFrame);
             ZonedDateTime zonedStartDate = ZonedDateTime.now(zoneId).minusDays(1);
             startDate = zonedStartDate.minusDays(period).format(df);
@@ -82,7 +80,6 @@ public class ScheduleExecution extends QuartzJobBean {
         //endTimeFrame
         String endTimeFrame = jobDataMap.getString("endTimeFrame");
         if(endTimeFrame != null && !endTimeFrame.equals("")) {
-            System.out.println("start time frame");
             int periodToEndDate = Integer.parseInt(endTimeFrame);
             ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId).minusDays(periodToEndDate);
             endDate = zonedDateTime.format(df);
@@ -91,27 +88,23 @@ public class ScheduleExecution extends QuartzJobBean {
         //startTimeFrame
         String startTimeFrame = jobDataMap.getString("startTimeFrame");
         if(startTimeFrame != null && !startTimeFrame.equals("")) {
-            System.out.println(" end time frame");
             int periodToStartDate = Integer.parseInt(startTimeFrame);
             ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId).minusDays(periodToStartDate);
             startDate = zonedDateTime.format(df);
         }
-
-        System.out.println(startDate);
-        System.out.println(endDate);
         LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status);
 
         try {
             Sheet trackerStateSheet = documentsService.generateExcellSheet(trackerStateList);
-            FileOutputStream fos = new FileOutputStream("Tracker States.xls");
-            trackerStateSheet.getWorkbook().write(fos);
-            fos.close();
-            FileDataSource source = new FileDataSource("Tracker States.xls");
-            sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
-            if(alertFrequency.isPresent()){
-                if (alertFrequency.get().equals("once")) {
+            try (FileOutputStream fos = new FileOutputStream("Tracker States.xls")) {
+                trackerStateSheet.getWorkbook().write(fos);
+                fos.close();
+                FileDataSource source = new FileDataSource("Tracker States.xls");
+                sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
+                if (alertFrequency.isPresent() && alertFrequency.get().equals("once") && Optional.ofNullable(jobDataMap.getString("scheduleId")).isPresent()) {
                     String scheduleId = Optional.ofNullable(jobDataMap.getString("scheduleId")).get();
                     scheduleService.deleteSchedule(scheduleId);
+
                 }
             }
         } catch (IOException | SchedulerException e) {
