@@ -9,15 +9,13 @@ image: atlassian/default-image:2
 
 pipelines:
   default:
-    - step: &sonarcloud
-        name: analyze with sonarcloud
+    - step: &sonarqube
+        name: analyze with hawkman sonarqube server
         script:
-          - pipe: sonarsource/sonarcloud-scan:1.0.1
-            variables:
-               SONAR_TOKEN: $SONAR_TOKEN
-            #   EXTRA_ARGS: '<string>'  # Optional
-            #   SONAR_SCANNER_OPTS: '<string>'  # Optional
-            #   DEBUG: '<boolean>'  # Optional
+          - mvn sonar:sonar \
+            -Dsonar.projectKey=n-t-m-s-19 \
+            -Dsonar.host.url=http://165.22.120.243:9000 \
+            -Dsonar.login=54c62c9870263292a8e586d4beed7d3a3f4d7c3c
 
     - step: &build-docker
         name: build and deploy
