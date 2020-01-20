@@ -7,7 +7,7 @@ public class TrackerState {
     private String label;
     private String customerId;
     private String trackerId;
-    private String Imei;
+    private String imei;
     private String model;
     private String phoneNumber;
     private String connectionStatus;
@@ -30,8 +30,8 @@ public class TrackerState {
     public String getTrackerId() { return trackerId; }
     public void setTrackerId(String trackerId) { this.trackerId = trackerId; }
 
-    public String getImei() { return Imei; }
-    public void setImei(String imei) { Imei = imei; }
+    public String getImei() { return imei; }
+    public void setImei(String imei) { this.imei = imei; }
 
     public String getModel() { return model; }
     public void setModel(String model) { this.model = model; }
