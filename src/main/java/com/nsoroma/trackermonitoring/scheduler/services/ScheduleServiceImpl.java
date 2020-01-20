@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService{
 
+    private static final String NSOROMA_TRACKER_MONITORING_SYSTEM_JOBS = "NsoromaTrackerMonitoringSystemJobs";
     @Autowired
     private Scheduler scheduler;
 
@@ -45,14 +46,14 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public Schedule getSchedule(String id) throws SchedulerException{
         Schedule schedule = new Schedule();
-        JobKey jobKey = new JobKey(id, "NsoromaTrackerMonitoringSystemJobs");
+        JobKey jobKey = new JobKey(id, NSOROMA_TRACKER_MONITORING_SYSTEM_JOBS);
 
         return setScheduleDetails(schedule, jobKey);
     }
 
     @Override
     public Boolean deleteSchedule(String id) throws SchedulerException {
-        JobKey jobKey = new JobKey(id, "NsoromaTrackerMonitoringSystemJobs");
+        JobKey jobKey = new JobKey(id, NSOROMA_TRACKER_MONITORING_SYSTEM_JOBS);
         return scheduler.deleteJob(jobKey);
     }
 
@@ -64,7 +65,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         if(dateTime.isBefore(ZonedDateTime.now())) {
             return false;
         } else {
-            JobKey jobKey = new JobKey(id, "NsoromaTrackerMonitoringSystemJobs");
+            JobKey jobKey = new JobKey(id, NSOROMA_TRACKER_MONITORING_SYSTEM_JOBS);
             TriggerKey triggerKey = TriggerKey.triggerKey(id, "NsoromaTrackerMonitoringSystemTriggers");
 
             JobDetail jobDetails = scheduler.getJobDetail(jobKey);
@@ -101,10 +102,10 @@ public class ScheduleServiceImpl implements ScheduleService{
             schedule.setTimeFrame(scheduleDetail.getJobDataMap().getString("timeFrame"));
             schedule.setEndTimeFrame(scheduleDetail.getJobDataMap().getString("endTimeFrame"));
             schedule.setStartTimeFrame(scheduleDetail.getJobDataMap().getString("startTimeFrame"));
-            System.out.println(schedule);
+            //System.out.println(schedule);
             return schedule;
         } catch (NullPointerException e) {
-            System.out.println("could not set schedule details in scheduleService" + e);
+            //System.out.println("could not set schedule details in scheduleService" + e);
             return null;
         }
 
