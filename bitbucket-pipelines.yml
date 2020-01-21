@@ -14,7 +14,8 @@ pipelines:
         script:
            - mvn sonar:sonar \
                -Dsonar.projectKey=n-t-m-s-19 \
-               -Dsonar.host.url=http://165.22.120.243:9000
+               -Dsonar.host.url=http://165.22.120.243:9000 \
+               -Dsonar.login=54c62c9870263292a8e586d4beed7d3a3f4d7c3c
 
     - step: &build-docker
         name: build and deploy
