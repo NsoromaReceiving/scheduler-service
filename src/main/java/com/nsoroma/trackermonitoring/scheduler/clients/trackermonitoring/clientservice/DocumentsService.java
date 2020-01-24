@@ -20,7 +20,7 @@ public class DocumentsService {
 
 
     public Sheet generateExcellSheet(Set<TrackerState> trackerStates) throws IOException {
-        try (Workbook workbook = new XSSFWorkbook()) {
+            Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Tracker States");
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
@@ -62,7 +62,6 @@ public class DocumentsService {
             }
 
             return sheet;
-        }
     }
 
 

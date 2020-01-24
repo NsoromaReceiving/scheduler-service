@@ -96,17 +96,17 @@ public class ScheduleExecution extends QuartzJobBean {
 
         try {
             Sheet trackerStateSheet = documentsService.generateExcellSheet(trackerStateList);
-            try (FileOutputStream fos = new FileOutputStream("Tracker States.xls")) {
-                trackerStateSheet.getWorkbook().write(fos);
-                fos.close();
-                FileDataSource source = new FileDataSource("Tracker States.xls");
-                sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
-                if (alertFrequency.isPresent() && alertFrequency.get().equals("once") && Optional.ofNullable(jobDataMap.getString("scheduleId")).isPresent()) {
-                    String scheduleId = Optional.ofNullable(jobDataMap.getString("scheduleId")).get();
-                    scheduleService.deleteSchedule(scheduleId);
+            FileOutputStream fos = new FileOutputStream("Tracker States.xls");
+            trackerStateSheet.getWorkbook().write(fos);
+            fos.close();
+            FileDataSource source = new FileDataSource("Tracker States.xls");
+            sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
+            if (alertFrequency.isPresent() && alertFrequency.get().equals("once") && Optional.ofNullable(jobDataMap.getString("scheduleId")).isPresent()) {
+                String scheduleId = Optional.ofNullable(jobDataMap.getString("scheduleId")).get();
+                scheduleService.deleteSchedule(scheduleId);
 
-                }
             }
+
         } catch (IOException | SchedulerException e) {
             e.printStackTrace();
         }
