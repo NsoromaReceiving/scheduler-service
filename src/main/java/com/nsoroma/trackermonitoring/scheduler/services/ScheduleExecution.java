@@ -100,6 +100,7 @@ public class ScheduleExecution extends QuartzJobBean {
             trackerStateSheet.getWorkbook().write(fos);
             fos.close();
             FileDataSource source = new FileDataSource("Tracker States.xls");
+            subject  = subject.concat(" : Total {" + trackerStateList.size() + "}"); //providing total number
             sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
             if (alertFrequency.isPresent() && alertFrequency.get().equals("once") && Optional.ofNullable(jobDataMap.getString("scheduleId")).isPresent()) {
                 String scheduleId = Optional.ofNullable(jobDataMap.getString("scheduleId")).get();
