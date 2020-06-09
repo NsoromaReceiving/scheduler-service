@@ -72,7 +72,7 @@ public class ScheduleExecution extends QuartzJobBean {
         String timeFrame = jobDataMap.getString("timeFrame");
         if(timeFrame != null && !timeFrame.equals("")) {
             int period = Integer.parseInt(timeFrame);
-            ZonedDateTime zonedStartDate = ZonedDateTime.now(zoneId).minusDays(1);
+            ZonedDateTime zonedStartDate = ZonedDateTime.now(zoneId);
             startDate = zonedStartDate.minusDays(period).format(df);
             endDate = zonedStartDate.format(df);
         }
