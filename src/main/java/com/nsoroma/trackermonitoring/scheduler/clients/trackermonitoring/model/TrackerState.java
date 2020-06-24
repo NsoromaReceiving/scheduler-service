@@ -14,6 +14,7 @@ public class TrackerState {
     private String tariffEndDate;
     private String customerName;
     private String lastGpsUpdate;
+    private String lastGsmUpdate;
     private String lastGpsSignalLevel;
     private String lastGpsLatitude;
     private String lastGpsLongitude;
@@ -68,4 +69,8 @@ public class TrackerState {
 
     public String getGsmNetworkName() { return gsmNetworkName; }
     public void setGsmNetworkName(String gsmNetworkName) { this.gsmNetworkName = gsmNetworkName; }
+
+    public String getLastGsmUpdate() { return lastGsmUpdate; }
+
+    public void setLastGsmUpdate(String lastGsmUpdate) { this.lastGsmUpdate = lastGsmUpdate; }
 }
