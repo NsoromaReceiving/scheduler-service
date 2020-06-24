@@ -96,8 +96,13 @@ public class ScheduleExecution extends QuartzJobBean {
         }
         LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status);
 
-        LinkedHashSet<TrackerState> trackerStatesBatteryLevel = trackerStateList.parallelStream().filter(trackerState ->
-                Integer.parseInt(trackerState.getLastBatteryLevel()) > 15).collect(Collectors.toCollection(LinkedHashSet::new));
+        LinkedHashSet<TrackerState> trackerStatesBatteryLevel = trackerStateList.parallelStream().filter(trackerState -> {
+            try {
+                return Integer.parseInt(trackerState.getLastBatteryLevel()) > 15;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }).collect(Collectors.toCollection(LinkedHashSet::new));
 
         try {
             Sheet trackerStateSheet = documentsService.generateExcelSheet(trackerStateList, scheduleId);
