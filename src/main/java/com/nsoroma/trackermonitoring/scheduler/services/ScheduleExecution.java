@@ -25,6 +25,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class ScheduleExecution extends QuartzJobBean {
@@ -53,6 +54,7 @@ public class ScheduleExecution extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
         JobDataMap jobDataMap = context.getMergedJobDataMap();
+        String scheduleId = jobDataMap.getString("scheduleId");
         String subject = jobDataMap.getString("subject");
         String body = jobDataMap.getString("body");
         String receiverMail = jobDataMap.getString("email");
@@ -94,18 +96,26 @@ public class ScheduleExecution extends QuartzJobBean {
         }
         LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status);
 
+        LinkedHashSet<TrackerState> trackerStatesBatteryLevel = trackerStateList.parallelStream().filter(trackerState ->
+                Integer.parseInt(trackerState.getLastBatteryLevel()) > 15).collect(Collectors.toCollection(LinkedHashSet::new));
+
         try {
-            Sheet trackerStateSheet = documentsService.generateExcellSheet(trackerStateList);
-            FileOutputStream fos = new FileOutputStream("Tracker States.xls");
+            Sheet trackerStateSheet = documentsService.generateExcelSheet(trackerStateList, scheduleId);
+            FileOutputStream fos = new FileOutputStream(scheduleId + ".xls");
             trackerStateSheet.getWorkbook().write(fos);
             fos.close();
-            FileDataSource source = new FileDataSource("Tracker States.xls");
-            subject  = subject.concat(" : Total {" + trackerStateList.size() + "}"); //providing total number
-            sendMail(mailProperties.getUsername(), receiverMail, subject, body, source);
-            if (alertFrequency.isPresent() && alertFrequency.get().equals("once") && Optional.ofNullable(jobDataMap.getString("scheduleId")).isPresent()) {
-                String scheduleId = Optional.ofNullable(jobDataMap.getString("scheduleId")).get();
-                scheduleService.deleteSchedule(scheduleId);
 
+            Sheet trackerStateSheet2 = documentsService.generateExcelSheet(trackerStatesBatteryLevel, scheduleId + "cutoff");
+            FileOutputStream fos2 = new FileOutputStream(scheduleId + " Cut-Off.xls");
+            trackerStateSheet2.getWorkbook().write(fos2);
+            fos2.close();
+
+            FileDataSource source = new FileDataSource("Tracker States.xls");
+            FileDataSource source2 = new FileDataSource("Tracker States Cut-Off.xls");
+            subject  = subject.concat(" : Total {" + trackerStateList.size() + "}"); //providing total number
+            sendMail(mailProperties.getUsername(), receiverMail, subject, body, source, source2);
+            if (alertFrequency.isPresent() && alertFrequency.get().equals("once")) {
+                scheduleService.deleteSchedule(scheduleId);
             }
 
         } catch (IOException | SchedulerException e) {
@@ -114,7 +124,7 @@ public class ScheduleExecution extends QuartzJobBean {
 
     }
 
-    private void sendMail(String senderMail, String receiverMail, String subject, String body, FileDataSource trackerStateSheet) {
+    private void sendMail(String senderMail, String receiverMail, String subject, String body, FileDataSource trackerStateSheet, FileDataSource trackerStateSheetCutoff) {
 
         try{
             MimeMessage message = mailSender.createMimeMessage();
@@ -124,6 +134,7 @@ public class ScheduleExecution extends QuartzJobBean {
             messageHelper.setFrom(senderMail);
             messageHelper.setTo(receiverMail);
             messageHelper.addAttachment("Tracker States.xlsx", trackerStateSheet);
+            messageHelper.addAttachment("Tracker States Cutoff.xlsx", trackerStateSheetCutoff);
             mailSender.send(message);
 
         } catch (MessagingException e) {
