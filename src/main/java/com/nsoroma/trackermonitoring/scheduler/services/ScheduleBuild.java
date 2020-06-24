@@ -14,12 +14,10 @@ public class ScheduleBuild {
     public JobDetail buildScheduleDetail(Schedule schedule) {
         JobDataMap jobDataMap = new JobDataMap();
 
-        if(schedule.getScheduleId() == null) { // to enable reuse in in updating a schedule
+        if(schedule.getScheduleId() == null) {
             String scheduleId = UUID.randomUUID().toString();
             schedule.setScheduleId(scheduleId);
         }
-
-        System.out.println(schedule.getScheduleId());
 
         jobDataMap.put("email", schedule.getEmail());
         jobDataMap.put("subject", schedule.getSubject());

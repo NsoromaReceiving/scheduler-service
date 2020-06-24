@@ -102,10 +102,8 @@ public class ScheduleServiceImpl implements ScheduleService{
             schedule.setTimeFrame(scheduleDetail.getJobDataMap().getString("timeFrame"));
             schedule.setEndTimeFrame(scheduleDetail.getJobDataMap().getString("endTimeFrame"));
             schedule.setStartTimeFrame(scheduleDetail.getJobDataMap().getString("startTimeFrame"));
-            //System.out.println(schedule);
             return schedule;
         } catch (NullPointerException e) {
-            //System.out.println("could not set schedule details in scheduleService" + e);
             return null;
         }
 
