@@ -110,8 +110,8 @@ public class ScheduleExecution extends QuartzJobBean {
             trackerStateSheet2.getWorkbook().write(fos2);
             fos2.close();
 
-            FileDataSource source = new FileDataSource("Tracker States.xls");
-            FileDataSource source2 = new FileDataSource("Tracker States Cut-Off.xls");
+            FileDataSource source = new FileDataSource(scheduleId + ".xls");
+            FileDataSource source2 = new FileDataSource(scheduleId + " Cut-Off.xls");
             subject  = subject.concat(" : Total {" + trackerStateList.size() + "}"); //providing total number
             sendMail(mailProperties.getUsername(), receiverMail, subject, body, source, source2);
             if (alertFrequency.isPresent() && alertFrequency.get().equals("once")) {
