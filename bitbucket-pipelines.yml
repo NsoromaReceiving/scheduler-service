@@ -14,22 +14,33 @@ pipelines:
         script:
            - mvn clean package sonar:sonar -Dsonar.projectKey=n-t-m-s-19 -Dsonar.host.url=http://165.22.120.243:9000 -Dsonar.login=6fe927cb875c24260c41660607b8209bc40e1c94
 
-    - step: &build-docker
-        name: build and deploy
-        services:
-          - docker
-        script: # Modify the commands below to build your repository.
-          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export IMAGE=hawkmanlabs/tracker-monitoring-scheduler
-          - export IMAGE_NAME=hawkmanlabs/tracker-monitoring-scheduler:$BITBUCKET_COMMIT
-          - export IMAGE_NAME2=hawkmanlabs/tracker-monitoring-scheduler:stable
+  branches:
+    develop:
+      - step: &build-deploy-docker-stable-version
+          name: build and deploy to docker-hub
+          services:
+            - docker
+          script:
+            - export IMAGE=hawkmanlabs/nsoroma-tracker-monitoring-service
+            - export IMAGE_NAME=hawkmanlabs/nsoroma-tracker-monitoring-service:$BITBUCKET_COMMIT
+            - export IMAGE_NAME2=hawkmanlabs/nsoroma-tracker-monitoring-service:stable
 
-          # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $IMAGE_NAME -t $IMAGE_NAME2 .
-          # authenticate with the Docker Hub registry
-          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
-          # push the new Docker image to the Docker registry
-          - docker push $IMAGE
+            - docker build -t $IMAGE_NAME -t $IMAGE_NAME2 .
+            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+            - docker push $IMAGE
+
+    feature/dual-report:
+      - step: &build-deploy-docker-feature
+          name: build and deploy to docker-hub
+          services:
+            - docker
+          script:
+            - export IMAGE=hawkmanlabs/nsoroma-tracker-monitoring-service
+            - export IMAGE_NAME2=hawkmanlabs/nsoroma-tracker-monitoring-service:feature
+
+            - docker build -t $IMAGE_NAME -t $IMAGE_NAME2 .
+            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+            - docker push $IMAGE
 definitions:
   services:
     docker:
