@@ -105,12 +105,12 @@ public class ScheduleExecution extends QuartzJobBean {
         }).collect(Collectors.toCollection(LinkedHashSet::new));
 
         try {
-            Sheet trackerStateSheet = documentsService.generateExcelSheet(trackerStateList, scheduleId);
+            Sheet trackerStateSheet = documentsService.generateInHouseExcelSheet(trackerStateList, scheduleId);
             FileOutputStream fos = new FileOutputStream(scheduleId + ".xls");
             trackerStateSheet.getWorkbook().write(fos);
             fos.close();
 
-            Sheet trackerStateSheet2 = documentsService.generateExcelSheet(trackerStatesBatteryLevel, scheduleId + "cutoff");
+            Sheet trackerStateSheet2 = documentsService.generateInHouseExcelSheet(trackerStatesBatteryLevel, scheduleId + "cutoff");
             FileOutputStream fos2 = new FileOutputStream(scheduleId + " Cut-Off.xls");
             trackerStateSheet2.getWorkbook().write(fos2);
             fos2.close();

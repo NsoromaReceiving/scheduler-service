@@ -11,14 +11,14 @@ import java.util.Set;
 @Service
 public class DocumentsService {
 
-    private static String[] columns = {"Label", "Customer Name", "Customer Id", "*Last Gsm Update", "Last Gps Update",
+    private static String[] inHouseSheetColumns = {"Label", "Customer Name", "Customer Id", "*Last Gsm Update", "Last Gps Update",
             "Tracker Id", "Imei No.", "Model", "Phone Number", "Connection Status",
             "Tariff End Date", "Last Gps Signal Level", "Last Gps Latitude",
             "Last Gps Longitude", "Last Battery Level", "Last Gsm Signal Level", "Gsm NetworkName"};
 
 
 
-    public Sheet generateExcelSheet(Set<TrackerState> trackerStates, String name) throws IOException {
+    public Sheet generateInHouseExcelSheet(Set<TrackerState> trackerStates, String name) throws IOException {
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet(name);
             Font headerFont = workbook.createFont();
@@ -28,9 +28,9 @@ public class DocumentsService {
             CellStyle headerCellStyle = workbook.createCellStyle();
             headerCellStyle.setFont(headerFont);
             Row headerRow = sheet.createRow(0);
-            for (int i = 0; i < columns.length; i++) {
+            for (int i = 0; i < inHouseSheetColumns.length; i++) {
                 Cell cell = headerRow.createCell(i);
-                cell.setCellValue(columns[i]);
+                cell.setCellValue(inHouseSheetColumns[i]);
                 cell.setCellStyle(headerCellStyle);
             }
 
@@ -57,7 +57,7 @@ public class DocumentsService {
                 row.createCell(16).setCellValue(trackerState.getGsmNetworkName());
             }
 
-            for (int i = 0; i < columns.length; i++) {
+            for (int i = 0; i < inHouseSheetColumns.length; i++) {
                 sheet.autoSizeColumn(i);
             }
 
