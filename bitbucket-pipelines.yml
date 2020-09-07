@@ -21,9 +21,8 @@ pipelines:
           services:
             - docker
           script:
-            - export IMAGE=hawkmanlabs/nsoroma-tracker-monitoring-service
-            - export IMAGE_NAME=hawkmanlabs/nsoroma-tracker-monitoring-service:$BITBUCKET_COMMIT
-            - export IMAGE_NAME2=hawkmanlabs/nsoroma-tracker-monitoring-service:stable
+            - export IMAGE=hawkmanlabs/tracker-monitoring-scheduler
+            - export IMAGE_NAME2=hawkmanlabs/tracker-monitoring-scheduler:stable
 
             - docker build -t $IMAGE_NAME -t $IMAGE_NAME2 .
             - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
@@ -35,8 +34,8 @@ pipelines:
           services:
             - docker
           script:
-            - export IMAGE=hawkmanlabs/nsoroma-tracker-monitoring-service
-            - export IMAGE_NAME2=hawkmanlabs/nsoroma-tracker-monitoring-service:feature
+            - export IMAGE=hawkmanlabs/tracker-monitoring-scheduler
+            - export IMAGE_NAME2=hawkmanlabs/tracker-monitoring-scheduler:feature
 
             - docker build -t $IMAGE_NAME2 .
             - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
