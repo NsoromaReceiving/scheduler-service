@@ -1,6 +1,7 @@
 package com.nsoroma.trackermonitoring.scheduler.services;
 
 import com.nsoroma.trackermonitoring.scheduler.model.Schedule;
+import com.nsoroma.trackermonitoring.scheduler.model.ScheduleType;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,13 @@ public class ScheduleServiceImpl implements ScheduleService{
             schedule.setTimeFrame(scheduleDetail.getJobDataMap().getString("timeFrame"));
             schedule.setEndTimeFrame(scheduleDetail.getJobDataMap().getString("endTimeFrame"));
             schedule.setStartTimeFrame(scheduleDetail.getJobDataMap().getString("startTimeFrame"));
+            String scheduleType = scheduleDetail.getJobDataMap().getString("scheduleType");
+            if (scheduleType.equals("INHOUSE")) {
+                schedule.setScheduleType(ScheduleType.INHOUSE);
+            } else {
+                schedule.setScheduleType(ScheduleType.CLIENT);
+            }
+
             return schedule;
         } catch (NullPointerException e) {
             return null;
@@ -132,6 +140,8 @@ public class ScheduleServiceImpl implements ScheduleService{
         jobDetails.getJobDataMap().put("timeFrame", schedule.getTimeFrame());
         jobDetails.getJobDataMap().put("endTimeFrame", schedule.getEndTimeFrame());
         jobDetails.getJobDataMap().put("startTimeFrame", schedule.getEndTimeFrame());
+        jobDetails.getJobDataMap().put("scheduleType", schedule.getScheduleType().toString());
+
 
         return jobDetails;
     }
