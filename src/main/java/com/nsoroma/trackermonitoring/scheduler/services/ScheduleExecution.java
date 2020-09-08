@@ -118,17 +118,20 @@ public class ScheduleExecution extends QuartzJobBean {
         StringBuilder mailBody = new StringBuilder();
 
         mailBody.append("Dear Client,");
-        mailBody.append("\n\n");
+        mailBody.append(System.getProperty("line-separator"));
         mailBody.append("The column below  contains a list of your trackers that have not updated on the tracking server in the last 24 hours. \n" +
                 "Kindly let us know if each vehicle is");
-        mailBody.append("\n\n");
+        mailBody.append(System.getProperty("line-separator"));
         mailBody.append("a. actively moving");
-        mailBody.append("\n");
+        mailBody.append(System.getProperty("line-separator"));
         mailBody.append("b. parked for a long period or has its battery disconnected");
-        mailBody.append("\n");
+        mailBody.append(System.getProperty("line-separator"));
         mailBody.append("c. at the workshop.");
-        mailBody.append("\n\n\n\n");
+        mailBody.append(System.getProperty("line-separator"));
+        mailBody.append(System.getProperty("line-separator"));
+        mailBody.append(System.getProperty("line-separator"));
 
+        mailBody.append("<head><style>table {width:100%;} th, td {padding: 5px;} th { text-align: left;}</style></head>");
         mailBody.append("<table><tr><th>Label</th><th>*Last Gsm Update</th><th>Last Gps Update</th><th>Last Battery Level</th></tr>");
         for (TrackerState trackerState: trackerStateList) {
             mailBody.append("<tr><td>").append(trackerState.getLabel()).append("</td>");
@@ -138,7 +141,9 @@ public class ScheduleExecution extends QuartzJobBean {
             mailBody.append("</tr>");
         }
         mailBody.append("</table>");
-        mailBody.append("\n\n\n\n");
+        mailBody.append(System.getProperty("line-separator"));
+        mailBody.append(System.getProperty("line-separator"));
+        mailBody.append(System.getProperty("line-separator"));
         mailBody.append("Kindly respond to this message by sending an email to technicalservices@nsoromagps.com. ");
         mailBody.append("In the case of an active vehicle, please be sure it has moved for at least 5-10 minutes today and is still persistent in not updating so that we would know where to begin troubleshooting without asking you to repeat that step. Thank you. ");
 
