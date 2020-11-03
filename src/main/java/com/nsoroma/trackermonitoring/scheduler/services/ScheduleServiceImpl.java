@@ -141,6 +141,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         jobDetails.getJobDataMap().put("timeFrame", schedule.getTimeFrame());
         jobDetails.getJobDataMap().put("endTimeFrame", schedule.getEndTimeFrame());
         jobDetails.getJobDataMap().put("startTimeFrame", schedule.getEndTimeFrame());
+        jobDetails.getJobDataMap().put("server", schedule.getServer());
         jobDetails.getJobDataMap().put("scheduleType", schedule.getScheduleType().toString());
 
 
