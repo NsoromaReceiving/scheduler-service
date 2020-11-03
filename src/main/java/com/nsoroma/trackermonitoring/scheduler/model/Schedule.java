@@ -19,6 +19,7 @@ public class Schedule {
     private String timeFrame;
     private String endTimeFrame;
     private String startTimeFrame;
+    private String server;
     private ScheduleType scheduleType = ScheduleType.INHOUSE;
 
     public String getEmail() {
@@ -91,4 +92,12 @@ public class Schedule {
 
     public ScheduleType getScheduleType() { return scheduleType; }
     public void setScheduleType(ScheduleType scheduleType) { this.scheduleType = scheduleType; }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
 }
