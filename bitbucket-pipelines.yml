@@ -15,7 +15,7 @@ pipelines:
            - mvn clean package sonar:sonar -Dsonar.projectKey=n-t-m-s-19 -Dsonar.host.url=http://165.22.120.243:9000 -Dsonar.login=6fe927cb875c24260c41660607b8209bc40e1c94
 
   branches:
-    develop:
+    master:
       - step: &build-deploy-docker-stable-version
           name: build and deploy to docker-hub
           services:
