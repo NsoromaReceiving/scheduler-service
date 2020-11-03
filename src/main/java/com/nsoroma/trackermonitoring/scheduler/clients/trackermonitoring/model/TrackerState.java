@@ -14,12 +14,14 @@ public class TrackerState {
     private String tariffEndDate;
     private String customerName;
     private String lastGpsUpdate;
+    private String lastGsmUpdate;
     private String lastGpsSignalLevel;
     private String lastGpsLatitude;
     private String lastGpsLongitude;
     private String lastBatteryLevel;
     private String gsmSignalLevel;
     private String gsmNetworkName;
+    private String server;
 
     public String getLabel() { return label; }
     public void setLabel(String label) { this.label = label; }
@@ -68,4 +70,16 @@ public class TrackerState {
 
     public String getGsmNetworkName() { return gsmNetworkName; }
     public void setGsmNetworkName(String gsmNetworkName) { this.gsmNetworkName = gsmNetworkName; }
+
+    public String getLastGsmUpdate() { return lastGsmUpdate; }
+
+    public void setLastGsmUpdate(String lastGsmUpdate) { this.lastGsmUpdate = lastGsmUpdate; }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
 }
