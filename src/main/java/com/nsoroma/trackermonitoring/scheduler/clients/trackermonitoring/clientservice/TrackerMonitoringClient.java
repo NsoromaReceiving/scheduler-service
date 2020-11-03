@@ -18,5 +18,6 @@ public interface TrackerMonitoringClient {
                                             @RequestParam(value = "customerId", required = false) String customerId,
                                             @RequestParam(value = "type", required = false) String type,
                                             @RequestParam(value = "order", required = false) String order,
-                                            @RequestParam(value = "status", required = false) String status);
+                                            @RequestParam(value = "status", required = false) String status,
+                                            @RequestParam(value = "server", required = false) String server);
 }

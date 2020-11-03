@@ -70,6 +70,7 @@ public class ScheduleExecution extends QuartzJobBean {
         ZoneId zoneId = ZoneId.of(scheduleZoneId);
         DateTimeFormatter df =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String scheduleType = jobDataMap.getString("scheduleType");
+        String server = jobDataMap.getString("server");
 
         //time frame
         String timeFrame = jobDataMap.getString("timeFrame");
@@ -95,7 +96,7 @@ public class ScheduleExecution extends QuartzJobBean {
             ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId).minusDays(periodToStartDate);
             startDate = zonedDateTime.format(df);
         }
-        LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status);
+        LinkedHashSet<TrackerState> trackerStateList = trackerMonitoringClient.getTrackers(startDate,endDate,customerId,trackerType,order,status, server);
 
         LinkedHashSet<TrackerState> trackerStatesBatteryLevel = trackerStateList.parallelStream().filter(trackerState -> {
             try {
