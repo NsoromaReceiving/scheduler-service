@@ -103,6 +103,7 @@ public class ScheduleServiceImpl implements ScheduleService{
             schedule.setTimeFrame(scheduleDetail.getJobDataMap().getString("timeFrame"));
             schedule.setEndTimeFrame(scheduleDetail.getJobDataMap().getString("endTimeFrame"));
             schedule.setStartTimeFrame(scheduleDetail.getJobDataMap().getString("startTimeFrame"));
+            schedule.setServer(scheduleDetail.getJobDataMap().getString("server"));
             String scheduleType = scheduleDetail.getJobDataMap().getString("scheduleType");
             if (scheduleType.equals("INHOUSE")) {
                 schedule.setScheduleType(ScheduleType.INHOUSE);
