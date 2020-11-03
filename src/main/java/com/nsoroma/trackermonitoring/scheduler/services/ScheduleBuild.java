@@ -43,6 +43,7 @@ public class ScheduleBuild {
         jobDataMap.put("endTimeFrame", schedule.getEndTimeFrame());
         jobDataMap.put("startTimeFrame", schedule.getStartTimeFrame());
         jobDataMap.put("scheduleType", schedule.getScheduleType().toString());
+        jobDataMap.put("server", schedule.getServer().toString());
 
         return JobBuilder.newJob(ScheduleExecution.class)
                 .withIdentity(schedule.getScheduleId(), "NsoromaTrackerMonitoringSystemJobs")
