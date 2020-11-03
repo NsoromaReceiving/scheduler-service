@@ -14,7 +14,7 @@ public class DocumentsService {
     private static String[] inHouseSheetColumns = {"Label", "Customer Name", "Customer Id", "*Last Gsm Update", "Last Gps Update",
             "Tracker Id", "Imei No.", "Model", "Phone Number", "Connection Status",
             "Tariff End Date", "Last Gps Signal Level", "Last Gps Latitude",
-            "Last Gps Longitude", "Last Battery Level", "Last Gsm Signal Level", "Gsm NetworkName"};
+            "Last Gps Longitude", "Last Battery Level", "Last Gsm Signal Level", "Gsm NetworkName", "Server"};
 
 
 
@@ -55,6 +55,7 @@ public class DocumentsService {
                 row.createCell(14).setCellValue(trackerState.getLastBatteryLevel());
                 row.createCell(15).setCellValue(trackerState.getGsmSignalLevel());
                 row.createCell(16).setCellValue(trackerState.getGsmNetworkName());
+                row.createCell(17).setCellValue(trackerState.getServer());
             }
 
             for (int i = 0; i < inHouseSheetColumns.length; i++) {

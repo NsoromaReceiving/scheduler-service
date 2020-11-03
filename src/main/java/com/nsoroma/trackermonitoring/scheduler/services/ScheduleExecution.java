@@ -100,7 +100,7 @@ public class ScheduleExecution extends QuartzJobBean {
 
         LinkedHashSet<TrackerState> trackerStatesBatteryLevel = trackerStateList.parallelStream().filter(trackerState -> {
             try {
-                return Integer.parseInt(trackerState.getLastBatteryLevel()) > 15;
+                return Integer.parseInt(trackerState.getLastBatteryLevel()) > 30;
             } catch (NumberFormatException e) {
                 return false;
             }
