@@ -142,7 +142,12 @@ public class ScheduleExecution extends QuartzJobBean {
             mailBody.append("<tr><td>").append(trackerState.getLabel()).append("</td>");
             mailBody.append("<td>").append(trackerState.getLastGsmUpdate()).append("</td>");
             mailBody.append("<td>").append(trackerState.getLastGpsUpdate()).append("</td>");
-            mailBody.append("<td>").append(trackerState.getLastBatteryLevel()).append("</td>");
+            if(trackerState.getLastBatteryLevel() != null) {
+                mailBody.append("<td>").append(trackerState.getLastBatteryLevel()).append("</td>");
+            } else {
+                mailBody.append("<td>").append("N/A").append("</td>");
+            }
+
             mailBody.append("</tr>");
         }
         mailBody.append("</table>");
