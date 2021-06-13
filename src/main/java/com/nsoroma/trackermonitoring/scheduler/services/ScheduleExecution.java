@@ -23,7 +23,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -107,6 +111,7 @@ public class ScheduleExecution extends QuartzJobBean {
         }).collect(Collectors.toCollection(LinkedHashSet::new));
 
         if (scheduleType.equals("INHOUSE")) {
+            trackerStateList = trackerStateList.stream().sorted(Comparator.comparing(TrackerState::getCustomerName)).collect(Collectors.toCollection(LinkedHashSet::new));
             writeToExcelSheets(scheduleId, subject, body, receiverMail, alertFrequency, trackerStateList, trackerStatesBatteryLevel);
         } else {
             designClientMail(scheduleId, subject, receiverMail, alertFrequency, trackerStateList);
