@@ -2,6 +2,7 @@ package com.nsoroma.trackermonitoring.scheduler.clients.trackermonitoring.client
 
 import com.nsoroma.trackermonitoring.scheduler.clients.trackermonitoring.model.TrackerState;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,15 @@ public class DocumentsService {
 
     public Sheet generateInHouseExcelSheet(Set<TrackerState> trackerStates, String name) throws IOException {
             Workbook workbook = new XSSFWorkbook();
+
+            XSSFCellStyle batteryStyle = (XSSFCellStyle) workbook.createCellStyle();
+            batteryStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+            batteryStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        XSSFCellStyle gsmNetworkStyle = (XSSFCellStyle) workbook.createCellStyle();
+        gsmNetworkStyle.setFillForegroundColor(IndexedColors.INDIGO.getIndex());
+        gsmNetworkStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
             Sheet sheet = workbook.createSheet(name);
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
@@ -53,7 +63,21 @@ public class DocumentsService {
                 row.createCell(12).setCellValue(trackerState.getLastGpsLatitude());
                 row.createCell(13).setCellValue(trackerState.getLastGpsLongitude());
                 row.createCell(14).setCellValue(trackerState.getLastBatteryLevel());
+                try {
+                    if(Integer.parseInt(trackerState.getLastBatteryLevel()) < 30 ) {
+                        row.getCell(14).setCellStyle(batteryStyle);
+                    }
+                }catch (NumberFormatException | NullPointerException e) {
+                    continue;
+                }
                 row.createCell(15).setCellValue(trackerState.getGsmSignalLevel());
+                try {
+                    if(Double.parseDouble(trackerState.getGsmSignalLevel()) < 20 ) {
+                        row.getCell(15).setCellStyle(gsmNetworkStyle);
+                    }
+                }catch (NumberFormatException | NullPointerException e) {
+                    continue;
+                }
                 row.createCell(16).setCellValue(trackerState.getGsmNetworkName());
                 row.createCell(17).setCellValue(trackerState.getServer());
             }
