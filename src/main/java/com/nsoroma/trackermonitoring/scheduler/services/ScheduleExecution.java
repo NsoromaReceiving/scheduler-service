@@ -175,11 +175,6 @@ public class ScheduleExecution extends QuartzJobBean {
             trackerStateSheet.getWorkbook().write(fos);
             fos.close();
 
-            Sheet trackerStateSheet2 = documentsService.generateInHouseExcelSheet(trackerStatesBatteryLevel, scheduleId + "cutoff");
-            FileOutputStream fos2 = new FileOutputStream(scheduleId + " Cut-Off.xls");
-            trackerStateSheet2.getWorkbook().write(fos2);
-            fos2.close();
-
             FileDataSource source = new FileDataSource(scheduleId + ".xls");
             FileDataSource source2 = new FileDataSource(scheduleId + " Cut-Off.xls");
             subject  = subject.concat(" : Total {" + trackerStateList.size() + "}"); //providing total number
@@ -207,7 +202,6 @@ public class ScheduleExecution extends QuartzJobBean {
             messageHelper.setFrom(senderMail);
             messageHelper.setTo(receiverMail);
             messageHelper.addAttachment("Tracker States.xlsx", trackerStateSheet);
-            messageHelper.addAttachment("Tracker States Cutoff.xlsx", trackerStateSheetCutoff);
             mailSender.send(message);
 
         } catch (MessagingException e) {
