@@ -4,7 +4,7 @@ COPY src /usr/app/src
 
 COPY pom.xml /usr/app
 
-RUN mvn -f /usr/app/pom.xml clean package
+RUN mvn -Dhttps.protocols=TLSv1.2 -f /usr/app/pom.xml clean package
 
 
 
